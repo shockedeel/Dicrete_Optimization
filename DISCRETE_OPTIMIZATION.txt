@@ -1,0 +1,151 @@
+PART ONE	
+	Start with a greedy algo
+		There can be many
+		Not guaranteed quality
+
+	Formalizing an optimization task as a Mathematical Model
+
+		Choose some decision variables
+			They encode the result we are interested in
+
+		Express the problem constraints in terms of these vars
+			they specify what the solution to the problems are
+
+		Express the objective function
+			the objective function specifices the quality of each solution
+
+		The Result of these 3 things is an optimization models
+			There may be many ways to model an optimization problem
+
+			EX. Knapsack
+		Decision vars
+			x_i denotes wheter item i is selected in the solution
+			x_i =0 is not selected x_i=1 is selected
+		Problem constraint
+			The selected item cannot exceed the capacity of the knapsack
+
+		Objective function
+			Captures the total value of selected items
+
+		Search Space- all configurations of decision variables
+
+		Feasible Search Space- all POSSIBLE configurations of decision vars
+		The problem?
+			Search Space grows exponentially, so for large enough values, it becomes infeasible to brute force
+
+
+
+	Dynamic Programming
+		Widely used optimization technique
+			for certain classes of problems
+			heavily used in computation biology
+		Basic Principle
+			divide and conquer
+			bottom up computation
+
+		Recurrence Relations
+			Assume that we know how to solve --- similiar to inductive proofs
+				O(k,j-1) for all k in 0...K
+			We want to solve O(k,j)
+				We are just considering one more item i.e. item j.
+			If w_j <= k, there are two cases
+				Either we do not select item j, then the best solution we can obtain is O(k,j-1)
+				Or we select item j and the best solution is v_j+O(k-w_j,j-1)
+
+			Simple Sample Program:
+				int O(int k, int j){
+					if(j == 0)
+						return 0;
+					else if (w_j <= k)
+						return max(O(k,j-1),v_j + O(k-w_j, j-1));
+					else
+						return O(k, j-1)
+					
+				}
+				
+			Dynamic Programming is BOTTOM UP
+			calculate all cases before and then use table to calculate new cases
+			Pseudo-polynomial algorithm
+				efficient when K is small but not that efficient with large K's
+				Can back track to see what you chose, start in bottom right of table
+			
+
+		Branch and Bound
+			Itervative two steps
+				branching bounding
+			Branching
+				split the problem into a number of subproblems
+					like in exhastive search
+			Bounding
+				find an optimistic estimate of the best solution to the subproblem
+					maximization: upper bound
+					minimization: lower bound
+			
+			How to find this optimistic estimate?
+				Relaxation
+			What can we relax?
+				(in knapsack) the capacity constraint
+			
+			Linear Relaxation
+				instead of decision var being 0 OR 1 we tranform it from integer to reals
+				So our decision var becomes 0<=x_i<=1, then we use this to find our bound value
+				Linear Relaxation is NOT a solution, it is an optimistic evaluation
+			Depth First
+				Always exploring a branch before going back to another branch
+			Best First
+				Being greedy and selecting the one with best optimistic evaluation (if eval is better than current solution)
+
+				When to use?
+					When you have a very good optimistic evaluation
+
+			Limited Discrepancy Search 
+				Avoid mistakes
+				Mistake is classified as branching right instead of left (not taking item)
+				Done in Waves
+					First wave no mistakes
+					Second wave one mistake
+					Third wave two mistakes
+					...etc
+				trust the greedy heuristic 
+					at each step we avoid mistakes
+				It prunes when the optimistic evaluation for a branch is less than the current best solution
+				Is it memory efficient?
+					It depends...
+					You can choose to either use more space and less time or less space and more time
+
+PART TWO
+	Constraint Programming
+		Computational paradigm
+			use constraints to reduce the set of values each variable can take
+			remove values that cannot appear in any solution
+
+		In essence you are using contraints to reduce search space
+
+		Branch and prune
+			pruning
+				reduce the search space as much as possible
+			branching
+				decompose the problem into subproblems and explore the subproblems
+
+		What does a constraint do?
+			feasibility checking - i.e. constraint system checks if it is satisfiable
+			pruning - goal of a constraint is to prune the tree
+
+		Propagation Engine
+			core of constraint programming solver
+			simple algorithm
+			example program:
+				propagate(){
+					repeat
+						select a constraint c;
+						if c is infeasible given the domain store then
+							return failure;
+						else
+							apply the pruning algorithm associated with c;
+					until no constraint can remove any value from the domain of its variables;
+					return success;
+				}
+
+
+			
+				
