@@ -1,5 +1,8 @@
 //so far only works on basic ones
-
+/*
+The way this works basically is:
+add constraints-> prune search space->find values that need to be added->add those->repeat
+*/
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
