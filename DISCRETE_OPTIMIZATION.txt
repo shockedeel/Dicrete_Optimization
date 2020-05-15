@@ -145,7 +145,23 @@ PART TWO
 					until no constraint can remove any value from the domain of its variables;
 					return success;
 				}
+		Reification
+			the ability to transform a constraint into a zero or one value
+		Global constraints 
+			Used to capture combinatorial substructures arising in many applications
+			make modeling easier
+			Problem solving
+				convey the problem structure to the solver that does not have to rediscover it
+				give the ability to exploit dedicated algorithms
+			Make it possible to discover infeasibilities earlier -> more efficient
+
+			you CAN make them independent, however, you could lose efficiency 
+
+			another benefit is that you can prune the search space more
+QUESTION: How do you know in what order to execute constraints, b/c depending on order, you could find a solution or not
+			Table Constraints:
+				A subset of the cartesian product of the sets you want to constrain
 
 
-			
+		
 				
