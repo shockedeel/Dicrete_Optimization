@@ -21,6 +21,7 @@ void removeValueSquare(int rowIndex, int colIndex,int valsPossible [SUDOKU_SIZE]
 void fillSodukuSolution(int sudokuSolution[SUDOKU_SIZE][SUDOKU_SIZE][SUDOKU_SIZE], int [SUDOKU_SIZE][SUDOKU_SIZE]);
 void addRowConstraint(int row, int valsPossible [SUDOKU_SIZE][SUDOKU_SIZE][SUDOKU_SIZE], int valToBeDeleted,int col);
 void addColumnConstraint(int col, int valsPossible [SUDOKU_SIZE][SUDOKU_SIZE][SUDOKU_SIZE],int valToBeDeleted, int row);
+void removeAllOtherValues(int [SUDOKU_SIZE][SUDOKU_SIZE][SUDOKU_SIZE], int , int , int);
 
 int main(int argc, const char * argv[]) {
     if(argc!=2){
@@ -102,8 +103,16 @@ void addConstraints(int sudokuSolution[SUDOKU_SIZE][SUDOKU_SIZE][SUDOKU_SIZE]){
         if nothing is found, then we make a decision with one of the indices with the lowest number of decision variables left possible
      */
     //See what vals have to be added -> Add value -> apply constraints ---->repeat
+    int amtLoops=0;
     while(checkVals(sudokuSolution)==false){
         std::cout<<"checking values..."<<std::endl;
+        if(amtLoops>8){
+            int row,col,valIndex;
+            findSquareWithLowestPossibleChoices(sudokuSolution,row,col,valIndex);
+            removeAllOtherValues(sudokuSolution,row,col,sudokuSolution[row][col][valIndex]);
+            
+        }
+        amtLoops++;
     }
     
     
@@ -149,6 +158,18 @@ void findSquareWithLowestPossibleChoices(int sudokuSolution[SUDOKU_SIZE][SUDOKU_
                 col=j;
                 valIndex = whereValInRow(sudokuSolution[i][j]);
             }
+        }
+    }
+}
+
+void removeAllOtherValues(int sudokuSolution[SUDOKU_SIZE][SUDOKU_SIZE][SUDOKU_SIZE], int row, int col, int valNotRemoved){
+    std::cout<<"removing other vals!"<<std::endl;
+    for(int i=0;i<SUDOKU_SIZE;i++){
+        if(valNotRemoved==sudokuSolution[row][col][i]){
+            //do nothing
+        }
+        else{
+            sudokuSolution[row][col][i]=0;
         }
     }
 }
